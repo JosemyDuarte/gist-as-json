@@ -3,6 +3,7 @@ package io.josemyduarte.gistasjson;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
 import javax.ws.rs.GET;
@@ -20,9 +21,12 @@ public class GistConverterResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public JsonNode convert(@QueryParam("url") String url) {
-
-        String myResume = RestClientBuilder.newBuilder()
+    public JsonNode convert(@QueryParam("url") final String url) {
+        if (Strings.isNullOrEmpty(url)){
+            return OBJECT_MAPPER.createObjectNode()
+                    .put("message", "You need to provide a Gist url");
+        }
+        final String myResume = RestClientBuilder.newBuilder()
                 .baseUri(URI.create(url))
                 .build(GistClient.class)
                 .getMyResume();

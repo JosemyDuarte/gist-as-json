@@ -1,0 +1,1 @@
+web: java -Dquarkus.http.port=$PORT -jar target/gist-as-json-1.0-runner.jar

@@ -17,22 +17,29 @@ import java.net.URI;
 public class GistConverterResource {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final String GIST_URL = "gist.githubusercontent.com";
 
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public JsonNode convert(@QueryParam("url") final String url) {
-        if (Strings.isNullOrEmpty(url)){
+        if (Strings.isNullOrEmpty(url)) {
             return OBJECT_MAPPER.createObjectNode()
                     .put("message", "You need to provide a url");
         }
-        final String myResume = RestClientBuilder.newBuilder()
-                .baseUri(URI.create(url))
+        final URI receivedURL = URI.create(url);
+        if (UrlChecker.isValid(GIST_URL, receivedURL)) {
+            return OBJECT_MAPPER.createObjectNode()
+                    .put("message", String.format("You need to provide a valid Gist url. [%s] is not valid", url));
+        }
+
+        final String content = RestClientBuilder.newBuilder()
+                .baseUri(receivedURL)
                 .build(GistClient.class)
-                .getMyResume();
+                .getContent();
 
         try {
-            return OBJECT_MAPPER.readValue(myResume, JsonNode.class);
+            return OBJECT_MAPPER.readValue(content, JsonNode.class);
         } catch (JsonProcessingException e) {
             return OBJECT_MAPPER.createObjectNode()
                     .put("message", "We had a problem converting the content given by your URL to JSON. Are you sure is a valid JSON?");

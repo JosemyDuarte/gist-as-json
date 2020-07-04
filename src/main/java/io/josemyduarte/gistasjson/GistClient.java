@@ -8,5 +8,5 @@ public interface GistClient {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    String getMyResume();
+    String getContent();
 }

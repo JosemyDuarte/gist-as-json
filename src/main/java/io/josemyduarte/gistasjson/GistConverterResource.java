@@ -24,7 +24,7 @@ public class GistConverterResource {
     public JsonNode convert(@QueryParam("url") final String url) {
         if (Strings.isNullOrEmpty(url)){
             return OBJECT_MAPPER.createObjectNode()
-                    .put("message", "You need to provide a Gist url");
+                    .put("message", "You need to provide a url");
         }
         final String myResume = RestClientBuilder.newBuilder()
                 .baseUri(URI.create(url))
@@ -35,7 +35,7 @@ public class GistConverterResource {
             return OBJECT_MAPPER.readValue(myResume, JsonNode.class);
         } catch (JsonProcessingException e) {
             return OBJECT_MAPPER.createObjectNode()
-                    .put("message", "We had a problem converting your gist to JSON. Are you sure is a valid JSON?");
+                    .put("message", "We had a problem converting the content given by your URL to JSON. Are you sure is a valid JSON?");
         }
     }
 }

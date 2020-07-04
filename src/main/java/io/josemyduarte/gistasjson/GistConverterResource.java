@@ -28,7 +28,7 @@ public class GistConverterResource {
                     .put("message", "You need to provide a url");
         }
         final URI receivedURL = URI.create(url);
-        if (UrlChecker.isValid(GIST_URL, receivedURL)) {
+        if (!UrlChecker.isValid(GIST_URL, receivedURL)) {
             return OBJECT_MAPPER.createObjectNode()
                     .put("message", String.format("You need to provide a valid Gist url. [%s] is not valid", url));
         }

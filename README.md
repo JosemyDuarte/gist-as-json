@@ -1,5 +1,7 @@
 # Gist as Json
 
+![Java CI with Maven](https://github.com/JosemyDuarte/gist-as-json/workflows/Java%20CI%20with%20Maven/badge.svg?event=pull_request)
+
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
